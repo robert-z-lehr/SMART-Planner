@@ -61,7 +61,10 @@
     .card h3{font-size:11px;text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px}
     .card textarea{border:0;padding:2px;min-height:64px}
     .smart-strip .card{min-height:94px}
-    .day-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:10px}
+    .day-grid{display:grid;grid-template-columns:1.55fr .45fr;gap:10px}
+    .constraint-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .constraint-grid textarea{min-height:54px;resize:none}
+    .day-page-break{break-before:page;page-break-before:always;margin-top:18px}
     .schedule td:first-child{width:70px;background:var(--soft);font-size:11px;font-weight:700;vertical-align:middle}
     .schedule td{height:30px}
     .schedule input{height:26px}
@@ -79,7 +82,7 @@
     .advice-card li+li{margin-top:5px}
     .footer-note{margin-top:10px;text-align:center;color:var(--muted);font-size:10px}
     @media (max-width:760px){
-      .header-row{align-items:flex-start}.brand{width:100%}.tools{margin-left:0}.sheet{min-height:auto;padding:18px}.two-col,.three-col,.five-col,.day-grid,.advice-grid{grid-template-columns:1fr}.smart-strip{grid-template-columns:1fr 1fr}.date-fields{margin-left:0;justify-content:flex-start}.month-day{min-height:68px}.sheet-head{align-items:flex-start;flex-direction:column}}
+      .header-row{align-items:flex-start}.brand{width:100%}.tools{margin-left:0}.sheet{min-height:auto;padding:18px}.two-col,.three-col,.five-col,.day-grid,.advice-grid{grid-template-columns:1fr}.constraint-grid{grid-template-columns:1fr 1fr}.smart-strip{grid-template-columns:1fr 1fr}.date-fields{margin-left:0;justify-content:flex-start}.month-day{min-height:68px}.sheet-head{align-items:flex-start;flex-direction:column}}
     @page{size:letter portrait;margin:.28in}
     @media print{
       html,body{background:#fff}
@@ -87,6 +90,7 @@
       main{padding:0}
       .sheet,.sheet.active{display:none;box-shadow:none;border-radius:0;width:auto;min-height:10.44in;margin:0;padding:.1in;page-break-after:avoid}
       .sheet.print-target{display:block!important}
+      .day-page-break{break-before:page;page-break-before:always;margin-top:0}
       input,textarea{print-color-adjust:exact;-webkit-print-color-adjust:exact}
       input::placeholder,textarea::placeholder{color:transparent}
       .footer-note{display:none}
@@ -121,20 +125,21 @@
     <div class="callout"><div class="mini-label">One focus for today</div><input data-save="day-focus" class="focus-input" type="text" placeholder="What single outcome matters most today?"></div>
     <div class="section day-grid">
       <div>
-        <h2 class="section-title">Action steps</h2>
-        <table><thead><tr><th style="width:32px">#</th><th>Concrete step</th><th style="width:110px">Supports</th><th class="check-cell">Done</th></tr></thead><tbody id="dayActions"></tbody></table>
+        <h2 class="section-title">Priority Action Steps</h2>
+        <table><thead><tr><th style="width:32px">#</th><th>Concrete Step</th><th class="check-cell">Done</th></tr></thead><tbody id="dayActions"></tbody></table>
       </div>
       <div>
         <h2 class="section-title">Constraints</h2>
-        <div class="card"><h3>Fixed commitments</h3><textarea data-save="day-fixed" placeholder="Class, meeting, appointment…"></textarea></div>
-        <div class="card" style="margin-top:8px"><h3>Blocker / risk</h3><textarea data-save="day-blocker" placeholder="What could prevent completion?"></textarea></div>
+        <div class="card"><h3>Fixed Commitments</h3><div class="constraint-grid"><textarea data-save="day-fixed-1" placeholder="•"></textarea><textarea data-save="day-fixed-2" placeholder="•"></textarea><textarea data-save="day-fixed-3" placeholder="•"></textarea><textarea data-save="day-fixed-4" placeholder="•"></textarea></div></div>
+        <div class="card" style="margin-top:8px"><h3>Blocker / Risk</h3><div class="constraint-grid"><textarea data-save="day-blocker-1" placeholder="•"></textarea><textarea data-save="day-blocker-2" placeholder="•"></textarea><textarea data-save="day-blocker-3" placeholder="•"></textarea><textarea data-save="day-blocker-4" placeholder="•"></textarea></div></div>
+        <div class="section"><h2 class="section-title">Results</h2></div>
       </div>
     </div>
-    <div class="section"><h2 class="section-title">Schedule</h2><table class="schedule"><tbody id="daySchedule"></tbody></table></div>
     <div class="section two-col">
-      <div class="card"><h3>End of day: produced</h3><textarea data-save="day-produced" placeholder="Observable output, not effort."></textarea></div>
-      <div class="card"><h3>Carry forward / change</h3><textarea data-save="day-carry" placeholder="What moves, changes, or gets dropped?"></textarea></div>
+      <div class="card"><h3>End of Day (Produced):</h3><textarea data-save="day-produced" placeholder="Observable output, not effort."></textarea></div>
+      <div class="card"><h3>Carry Forward / Change:</h3><textarea data-save="day-carry" placeholder="What moves, changes, or gets dropped?"></textarea></div>
     </div>
+    <div class="section day-page-break"><h2 class="section-title">Schedule</h2><table class="schedule"><tbody id="daySchedule"></tbody></table></div>
   </section>
 
   <section class="sheet" id="week" data-sheet="week">
@@ -238,7 +243,7 @@
 
   function buildRows(){
     const dayActions=$('#dayActions');
-    for(let i=1;i<=6;i++){const tr=document.createElement('tr'); addCell(tr,String(i)); addCell(tr,savedInput(`day-action-${i}`)); addCell(tr,savedInput(`day-support-${i}`,'text','G1 / course / etc.')); addCell(tr,checkbox(`day-action-done-${i}`),'check-cell'); dayActions.append(tr)}
+    for(let i=1;i<=5;i++){const tr=document.createElement('tr'); addCell(tr,String(i)); addCell(tr,savedInput(`day-action-${i}`)); addCell(tr,checkbox(`day-action-done-${i}`),'check-cell'); dayActions.append(tr)}
 
     const times=['7–8','8–9','9–10','10–11','11–12','12–1','1–2','2–3','3–4','4–5','5–6','6–7'];
     times.forEach((t,i)=>{const tr=document.createElement('tr'); addCell(tr,t); addCell(tr,savedInput(`day-time-${i}`)); $('#daySchedule').append(tr)});
