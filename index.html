@@ -41,6 +41,14 @@ table{width:100%;max-width:100%;border-collapse:collapse;table-layout:fixed}th,t
 @media(max-width:760px){.sheet-head{padding-right:95px!important;min-height:120px}.sheet-head .date-fields{max-width:100%;margin-left:0!important}.planner-header-qr img{width:70px;height:70px}}
 @media print{.sheet-head{position:relative!important;display:block!important;min-height:102px!important;padding-right:100px!important}.sheet-head .date-fields{margin:5px 0 0!important;display:flex!important;justify-content:flex-start!important}.sheet-head .planner-header-qr{position:absolute!important;right:0!important;top:0!important}.planner-header-qr img{width:76px!important;height:76px!important}.sheet-head p{font-size:9px!important}.subtitle-second{margin-top:2px}}
 .pdf-export-page .sheet-head{position:relative!important;display:block!important;min-height:110px!important;padding-right:100px!important}.pdf-export-page .date-fields{margin:5px 0 0!important;justify-content:flex-start!important}.pdf-export-page .planner-header-qr{position:absolute!important;right:0!important;top:0!important}
+
+input[type=date]:not(.date-selected){color:#999!important;-webkit-text-fill-color:#999!important}
+input[type=date]:not(.date-selected)::-webkit-datetime-edit{color:#999!important}
+@media print{
+input[type=date]:not(.date-selected){color:transparent!important;-webkit-text-fill-color:transparent!important}
+input[type=date]:not(.date-selected)::-webkit-datetime-edit{color:transparent!important;-webkit-text-fill-color:transparent!important}
+input[type=date]:not(.date-selected)::-webkit-calendar-picker-indicator{visibility:hidden!important}
+}
 </style><script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script></head><body>
 <header class="app-header"><div class="header-row"><div class="brand">SMART Planner</div><nav class="tabs"><button class="tab-btn active" data-tab="day">Day</button><button class="tab-btn" data-tab="domain">Domain</button><button class="tab-btn" data-tab="week">Week</button><button class="tab-btn" data-tab="month">Month</button><button class="tab-btn" data-tab="semester">Semester</button><button class="tab-btn" data-tab="year">Year</button></nav><div class="tools"><button class="tool-btn danger" id="clearBtn">Clear sheet</button><button class="tool-btn primary" id="printBtn">Print/Share PDF</button></div></div></header>
 <main>
@@ -86,6 +94,7 @@ function restoreDayRows(){
   for(let n=6;n<=count;n++)addDayRow(kind,true);
  }
 }
+function syncDateAppearance(root=document){$('input[type=date]',root).forEach(el=>el.classList.toggle('date-selected',!!el.value))}
 function hydrate(){$$('[data-save]').forEach(el=>{const k=P+el.dataset.save,v=localStorage.getItem(k);if(v!==null){if(el.type==='checkbox')el.checked=v==='true';else el.value=v}const ev=el.type==='checkbox'?'change':'input';el.addEventListener(ev,()=>localStorage.setItem(k,el.type==='checkbox'?String(el.checked):el.value))})}
 function activate(id){$$('.sheet').forEach(s=>s.classList.toggle('active',s.id===id));$$('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));history.replaceState(null,'',`#${id}`)}function cleanupPrint(){$$('.sheet.print-target').forEach(s=>s.classList.remove('print-target'))}function syncReflectionPrint(){$$('.sheet').forEach(sheet=>{const src=$('.lined-reflection',sheet),dst=$('.reflection-print',sheet);if(src&&dst)dst.textContent=src.value})}
 // Standalone iOS web apps can silently ignore window.print(); create a shareable PDF instead.
@@ -193,6 +202,7 @@ async function exportSheetPDF(){
     if(reflection){reflection.style.height='510px';reflection.style.minHeight='510px';reflection.style.overflow='hidden'}
    }
    clone.querySelectorAll('input,textarea').forEach(el=>el.removeAttribute('placeholder'));
+   clone.querySelectorAll('input[type=date]').forEach(el=>{if(!el.value){el.style.color='transparent';el.style.webkitTextFillColor='transparent';el.style.opacity='0'}});
    staging.replaceChildren(clone);
    const canvas=await html2canvas(clone,{backgroundColor:'#ffffff',scale:1.5,useCORS:true,logging:false,windowWidth:1024});
    if(i>0)pdf.addPage();
@@ -266,5 +276,5 @@ function setupDayRows(){
   saveDayRows(kind);renderDayRows(kind);
  }
 }
-buildStaticRows();restoreDayRows();buildDomains();hydrate();setupDayRows();$$('.tab-btn').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));window.addEventListener('beforeprint',syncReflectionPrint);window.addEventListener('afterprint',cleanupPrint);$('#printBtn').addEventListener('click',()=>{const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(ios){exportSheetPDF();return}cleanupPrint();syncReflectionPrint();const s=$('.sheet.active');s.classList.add('print-target');void s.offsetHeight;window.print()});$('#clearBtn').addEventListener('click',()=>{const s=$('.sheet.active');if(!confirm(`Clear all saved fields on the ${s.id} sheet?`))return;$$('[data-save]',s).forEach(el=>{localStorage.removeItem(P+el.dataset.save);if(el.type==='checkbox')el.checked=false;else el.value=''});if(s.id==='day'){for(const kind of ['action','event']){dayRowState[kind]=Array.from({length:5},()=>kind==='action'?{text:'',done:false}:{text:'',time:''});saveDayRows(kind);renderDayRows(kind)}}if(s.id==='domain')$('.domain-flag',s).forEach(b=>{localStorage.removeItem(b.dataset.flagKey);b.setAttribute('aria-pressed','false')})});const initial=location.hash.slice(1);if(['day','domain','week','month','semester','year'].includes(initial))activate(initial);
+buildStaticRows();restoreDayRows();buildDomains();hydrate();syncDateAppearance();document.addEventListener('change',e=>{if(e.target.matches('input[type=date]'))syncDateAppearance()});setupDayRows();$$('.tab-btn').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));window.addEventListener('beforeprint',syncReflectionPrint);window.addEventListener('afterprint',cleanupPrint);$('#printBtn').addEventListener('click',()=>{const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(ios){exportSheetPDF();return}cleanupPrint();syncReflectionPrint();const s=$('.sheet.active');s.classList.add('print-target');void s.offsetHeight;window.print()});$('#clearBtn').addEventListener('click',()=>{const s=$('.sheet.active');if(!confirm(`Clear all saved fields on the ${s.id} sheet?`))return;$$('[data-save]',s).forEach(el=>{localStorage.removeItem(P+el.dataset.save);if(el.type==='checkbox')el.checked=false;else el.value=''});if(s.id==='day'){for(const kind of ['action','event']){dayRowState[kind]=Array.from({length:5},()=>kind==='action'?{text:'',done:false}:{text:'',time:''});saveDayRows(kind);renderDayRows(kind)}}if(s.id==='domain')$('.domain-flag',s).forEach(b=>{localStorage.removeItem(b.dataset.flagKey);b.setAttribute('aria-pressed','false')})});const initial=location.hash.slice(1);if(['day','domain','week','month','semester','year'].includes(initial))activate(initial);
 </script></body></html>
