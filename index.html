@@ -107,7 +107,7 @@ async function exportSheetPDF(){
   const url=URL.createObjectURL(blob),link=document.createElement('a');
   link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();
   setTimeout(()=>URL.revokeObjectURL(url),60000);
- }catch(err){console.error('SMART Planner PDF export',err);alert('PDF export failed. Try opening this planner in Safari to print.')}
+ }catch(err){console.error('SMART Planner PDF export',err);alert('PDF export failed: '+(err && err.message ? err.message : String(err))+'. You can still print from Safari.')}
  finally{staging.remove();exporting=false;pdfBtn.disabled=false;printBtn.disabled=false;pdfBtn.textContent=oldText}
 }
 buildStaticRows();hydrate();$$('.tab-btn').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));window.addEventListener('beforeprint',syncReflectionPrint);window.addEventListener('afterprint',cleanupPrint);$('#pdfBtn').addEventListener('click',exportSheetPDF);$('#printBtn').addEventListener('click',()=>{if(isStandaloneIOS()){exportSheetPDF();return}cleanupPrint();syncReflectionPrint();const s=$('.sheet.active');s.classList.add('print-target');void s.offsetHeight;window.print()});$('#clearBtn').addEventListener('click',()=>{const s=$('.sheet.active');if(!confirm(`Clear all saved fields on the ${s.id} sheet?`))return;$$('[data-save]',s).forEach(el=>{localStorage.removeItem(P+el.dataset.save);if(el.type==='checkbox')el.checked=false;else el.value=''})});const initial=location.hash.slice(1);if(['day','week','month','semester','year','advice'].includes(initial))activate(initial);
