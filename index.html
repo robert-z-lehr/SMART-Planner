@@ -35,14 +35,14 @@ table{width:100%;max-width:100%;border-collapse:collapse;table-layout:fixed}th,t
 .domain-sections{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.domain-card{border:1px solid var(--line);border-radius:7px;padding:7px;min-width:0}.domain-card-head{display:flex;align-items:center;justify-content:space-between;gap:5px;margin-bottom:5px}.domain-card h2{margin:0;font-size:11px;letter-spacing:.06em;text-transform:uppercase}.domain-move{border:0;background:transparent;padding:1px 4px;font-size:13px;color:var(--accent);cursor:pointer}.domain-action{display:grid;grid-template-columns:16px minmax(0,1fr) 22px 22px;gap:5px;align-items:center;margin:4px 0}.domain-action .action-number{font-size:10px;color:var(--muted)}.domain-action input[type=text]{width:100%;min-width:0;height:26px;border:0;border-bottom:1px solid var(--line);border-radius:0;font-size:11px;padding:1px 3px}.domain-action input[type=checkbox]{margin:0;width:16px;height:16px}.domain-flag{border:0;background:transparent;color:#888;padding:0;font-size:16px;cursor:pointer}.domain-flag[aria-pressed=true]{color:#a66c05;font-weight:bold}
 @media(max-width:760px){.domain-sections{grid-template-columns:1fr}.domain-card{padding:9px}.domain-action input[type=text]{font-size:16px;height:30px}}
 @media print{.domain-sections{grid-template-columns:1fr 1fr!important;gap:7px!important;margin-top:8px!important}.domain-card{padding:5px!important;break-inside:avoid!important}.domain-move{display:none!important}.domain-card h2{font-size:10px}.domain-action{margin:2px 0;grid-template-columns:12px minmax(0,1fr) 17px 17px;gap:4px}.domain-action input[type=text]{height:23px!important;font-size:10px!important;border-bottom:1px solid #bbb!important}.domain-action input[type=checkbox]{width:13px;height:13px}.domain-flag{font-size:13px}#domain .sheet-head{margin-bottom:8px}#domain .callout{padding:7px}#domain .focus-input{font-size:15px}}
-.pdf-share-panel{position:fixed;inset:0;z-index:999;background:#0008;display:flex;justify-content:center;align-items:center;padding:18px}.pdf-share-panel[hidden]{display:none!important}.pdf-share-dialog{background:#fff;color:#171717;max-width:400px;width:100%;border-radius:12px;padding:22px;box-shadow:0 6px 25px #0003}.pdf-share-dialog h2{margin:0 0 8px;font-size:20px}.pdf-share-dialog p{font-size:14px;line-height:1.4}.pdf-share-actions{display:flex;gap:10px;justify-content:flex-end}.pdf-share-actions button{border-radius:8px;padding:8px 13px;border:1px solid #ccc;background:#fff}.pdf-share-actions .primary{background:var(--accent);color:white;border-color:var(--accent)}#pdfShareError{color:#8a2d2d}@media print{.pdf-share-panel{display:none!important}}.add-row-btn{margin-top:7px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--accent);font-size:12px;font-weight:700;padding:6px 10px;cursor:pointer}.add-row-btn:hover{background:var(--soft)}@media print{.add-row-btn{display:none!important}}</style><script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script></head><body>
+.pdf-share-panel{position:fixed;inset:0;z-index:999;background:#0008;display:flex;justify-content:center;align-items:center;padding:18px}.pdf-share-panel[hidden]{display:none!important}.pdf-share-dialog{background:#fff;color:#171717;max-width:400px;width:100%;border-radius:12px;padding:22px;box-shadow:0 6px 25px #0003}.pdf-share-dialog h2{margin:0 0 8px;font-size:20px}.pdf-share-dialog p{font-size:14px;line-height:1.4}.pdf-share-actions{display:flex;gap:10px;justify-content:flex-end}.pdf-share-actions button{border-radius:8px;padding:8px 13px;border:1px solid #ccc;background:#fff}.pdf-share-actions .primary{background:var(--accent);color:white;border-color:var(--accent)}#pdfShareError{color:#8a2d2d}@media print{.pdf-share-panel{display:none!important}}.add-row-btn{margin-top:7px;border:1px solid var(--line);border-radius:6px;background:#fff;color:var(--accent);font-size:12px;font-weight:700;padding:6px 10px;cursor:pointer}.add-row-btn:hover{background:var(--soft)}@media print{.add-row-btn{display:none!important}}.day-qr{display:flex;flex-direction:column;align-items:center;gap:2px;width:90px;flex-shrink:0}.day-qr img{display:block;width:80px;height:80px;object-fit:contain}.day-qr span{font-size:9px;text-align:center;font-weight:700;white-space:nowrap}.row-edit-col{width:40px!important;font-size:9px!important;text-align:center}.row-edit-controls{display:flex;gap:2px;justify-content:center}.row-edit-controls button,.append-row-btn{background:#fff;border:1px solid #ccc;border-radius:3px;color:var(--accent);font-size:12px;font-weight:700;min-width:18px;height:22px;padding:0 2px}.append-row td{padding:3px 5px}.append-row-btn{width:27px}.row-edit-controls button:focus-visible,.append-row-btn:focus-visible{outline:2px solid var(--accent)}@media print{.no-print,.append-row{display:none!important}#day .day-qr{display:flex!important}#day .day-qr img{width:75px;height:75px}#day input::placeholder{color:transparent!important;-webkit-text-fill-color:transparent!important}}@media(max-width:760px){#day .date-fields{align-items:flex-start}#day .day-qr{width:83px}} </style><script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script></head><body>
 <header class="app-header"><div class="header-row"><div class="brand">SMART Planner</div><nav class="tabs"><button class="tab-btn active" data-tab="day">Day</button><button class="tab-btn" data-tab="domain">Domain</button><button class="tab-btn" data-tab="week">Week</button><button class="tab-btn" data-tab="month">Month</button><button class="tab-btn" data-tab="semester">Semester</button><button class="tab-btn" data-tab="year">Year</button></nav><div class="tools"><button class="tool-btn danger" id="clearBtn">Clear sheet</button><button class="tool-btn primary" id="printBtn">Print/Share PDF</button></div></div></header>
 <main>
 <section class="sheet active" id="day" data-sheet="day">
 <div class="day-front">
-<div class="sheet-head"><div><h1>Daily Planner</h1><p>Prioritize tasks and organize events.</p></div><div class="date-fields"><div class="field"><label>Date</label><input data-save="day-date" type="date"></div></div></div>
-<div class="section"><h2 class="section-title">Priority Tasks</h2><table><thead><tr><th style="width:32px">#</th><th>Task</th><th class="check-cell">Done</th></tr></thead><tbody id="dayActions"></tbody></table><button type="button" class="add-row-btn" id="addDayAction">+ Add Row</button></div>
-<div class="section"><h2 class="section-title">Events</h2><table><thead><tr><th style="width:32px">#</th><th>Event / Commitment</th><th style="width:110px">Time</th></tr></thead><tbody id="dayEvents"></tbody></table><button type="button" class="add-row-btn" id="addDayEvent">+ Add Row</button></div>
+<div class="sheet-head"><div><h1>Daily Planner</h1><p>Prioritize tasks and organize events.</p></div><div class="date-fields"><div class="field"><label>Date</label><input data-save="day-date" type="date"></div><div class="day-qr"><img crossorigin="anonymous" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&amp;data=https%3A%2F%2Frobert-z-lehr.github.io%2FSMART-Planner%2F" alt="QR code linking to SMART Planner"><span>SMART Planner</span></div></div></div>
+<div class="section"><h2 class="section-title">Priority Tasks</h2><table><thead><tr><th class="row-edit-col no-print">+/−</th><th style="width:32px">#</th><th>Task</th><th class="check-cell">Done</th></tr></thead><tbody id="dayActions"></tbody></table></div>
+<div class="section"><h2 class="section-title">Events</h2><table><thead><tr><th class="row-edit-col no-print">+/−</th><th style="width:32px">#</th><th>Event / Commitment</th><th style="width:110px">Time</th></tr></thead><tbody id="dayEvents"></tbody></table></div>
 </div>
 <div class="day-back"><h2 class="section-title">What Happened Today?</h2><textarea class="lined-reflection" data-save="day-reflections" aria-label="Daily results"></textarea><div class="reflection-print" aria-hidden="true"></div></div></section>
 <section class="sheet" id="domain" data-sheet="domain">
@@ -168,7 +168,7 @@ async function exportSheetPDF(){
   syncReflectionPrint();
   const pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'pt',format:'letter',compress:true});
   for(let i=0;i<pages.length;i++){
-   const original=pages[i];const clone=original.cloneNode(true);clone.querySelectorAll('.add-row-btn').forEach(btn=>btn.remove());
+   const original=pages[i];const clone=original.cloneNode(true);clone.querySelectorAll('.add-row-btn,.no-print,.append-row').forEach(btn=>btn.remove());
    // Sync live form state from the original before rendering the PDF.
    const originalFields=Array.from(original.querySelectorAll('input,textarea,select'));
    const clonedFields=Array.from(clone.querySelectorAll('input,textarea,select'));
@@ -186,6 +186,7 @@ async function exportSheetPDF(){
     const reflection=clone.querySelector('.lined-reflection');
     if(reflection){reflection.style.height='510px';reflection.style.minHeight='510px';reflection.style.overflow='hidden'}
    }
+   clone.querySelectorAll('input,textarea').forEach(el=>el.removeAttribute('placeholder'));
    staging.replaceChildren(clone);
    const canvas=await html2canvas(clone,{backgroundColor:'#ffffff',scale:1.5,useCORS:true,logging:false,windowWidth:1024});
    if(i>0)pdf.addPage();
@@ -203,5 +204,61 @@ async function exportSheetPDF(){
  }catch(err){console.error('SMART Planner PDF export',err);alert('PDF export failed: '+(err && err.message ? err.message : String(err))+'. You can still print from Safari.')}
  finally{staging.remove();exporting=false;printBtn.disabled=false;printBtn.textContent='Print/Share PDF'}
 }
-buildStaticRows();restoreDayRows();buildDomains();hydrate();$$('.tab-btn').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));$('#addDayAction').addEventListener('click',()=>addDayRow('action'));$('#addDayEvent').addEventListener('click',()=>addDayRow('event'));window.addEventListener('beforeprint',syncReflectionPrint);window.addEventListener('afterprint',cleanupPrint);$('#printBtn').addEventListener('click',()=>{const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(ios){exportSheetPDF();return}cleanupPrint();syncReflectionPrint();const s=$('.sheet.active');s.classList.add('print-target');void s.offsetHeight;window.print()});$('#clearBtn').addEventListener('click',()=>{const s=$('.sheet.active');if(!confirm(`Clear all saved fields on the ${s.id} sheet?`))return;$$('[data-save]',s).forEach(el=>{localStorage.removeItem(P+el.dataset.save);if(el.type==='checkbox')el.checked=false;else el.value=''});if(s.id==='domain')$$('.domain-flag',s).forEach(b=>{localStorage.removeItem(b.dataset.flagKey);b.setAttribute('aria-pressed','false')})});const initial=location.hash.slice(1);if(['day','domain','week','month','semester','year'].includes(initial))activate(initial);
+// Day editor: durable rows with insertion/deletion and backwards-compatible migration.
+const dayRowState={action:[],event:[]};
+function collectLegacyRows(kind){
+ const tbody=$(kind==='action'?'#dayActions':'#dayEvents');
+ return [...tbody.rows].map(tr=>{const inp=$('input',tr);return kind==='action'
+  ? {text:inp[0]?.value||'',done:!!inp[1]?.checked}
+  : {text:inp[0]?.value||'',time:inp[1]?.value||''}});
+}
+function saveDayRows(kind){try{localStorage.setItem(P+'day-rows-v3-'+kind,JSON.stringify(dayRowState[kind]))}catch(e){}}
+function renderDayRows(kind){
+ const tbody=$(kind==='action'?'#dayActions':'#dayEvents');tbody.replaceChildren();
+ dayRowState[kind].forEach((item,i)=>{
+  const tr=document.createElement('tr');
+  const tools=document.createElement('td');tools.className='no-print row-edit-col';
+  const wrap=document.createElement('div');wrap.className='row-edit-controls';
+  for(const dir of ['+','−']){
+   const btn=document.createElement('button');btn.type='button';btn.textContent=dir;
+   btn.setAttribute('aria-label',dir==='+'?'Insert row below '+(i+1):'Remove row '+(i+1));
+   btn.addEventListener('click',()=>{
+    if(dir==='+')dayRowState[kind].splice(i+1,0,kind==='action'?{text:'',done:false}:{text:'',time:''});
+    else dayRowState[kind].splice(i,1);
+    saveDayRows(kind);renderDayRows(kind);
+   });wrap.append(btn);
+  }
+  tools.append(wrap);tr.append(tools);addCell(tr,String(i+1));
+  const input=document.createElement('input');input.type='text';input.value=item.text||'';input.setAttribute('aria-label',kind+' '+(i+1));
+  input.addEventListener('input',()=>{item.text=input.value;saveDayRows(kind)});
+  addCell(tr,input);
+  if(kind==='action'){
+   const done=document.createElement('input');done.type='checkbox';done.checked=!!item.done;
+   done.setAttribute('aria-label','Complete task '+(i+1));
+   done.addEventListener('change',()=>{item.done=done.checked;saveDayRows(kind)});
+   addCell(tr,done,'check-cell');
+  }else{
+   const time=document.createElement('input');time.type='text';time.placeholder='e.g. 2 PM';time.value=item.time||'';
+   time.setAttribute('aria-label','Time for event '+(i+1));
+   time.addEventListener('input',()=>{item.time=time.value;saveDayRows(kind)});
+   addCell(tr,time);
+  }
+  tbody.append(tr);
+ });
+ const tail=document.createElement('tr');tail.className='append-row no-print';
+ const control=document.createElement('td');const add=document.createElement('button');add.type='button';
+ add.className='append-row-btn';add.textContent='+';add.setAttribute('aria-label','Add '+kind+' row at end');
+ add.addEventListener('click',()=>{dayRowState[kind].push(kind==='action'?{text:'',done:false}:{text:'',time:''});saveDayRows(kind);renderDayRows(kind)});
+ control.append(add);tail.append(control);
+ const empty=document.createElement('td');empty.colSpan=3;tail.append(empty);tbody.append(tail);
+}
+function setupDayRows(){
+ for(const kind of ['action','event']){
+  let records=null;
+  try{const raw=JSON.parse(localStorage.getItem(P+'day-rows-v3-'+kind)||'null');if(Array.isArray(raw))records=raw}catch(e){}
+  dayRowState[kind]=records===null?collectLegacyRows(kind):records;
+  saveDayRows(kind);renderDayRows(kind);
+ }
+}
+buildStaticRows();restoreDayRows();buildDomains();hydrate();setupDayRows();$$('.tab-btn').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));window.addEventListener('beforeprint',syncReflectionPrint);window.addEventListener('afterprint',cleanupPrint);$('#printBtn').addEventListener('click',()=>{const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(ios){exportSheetPDF();return}cleanupPrint();syncReflectionPrint();const s=$('.sheet.active');s.classList.add('print-target');void s.offsetHeight;window.print()});$('#clearBtn').addEventListener('click',()=>{const s=$('.sheet.active');if(!confirm(`Clear all saved fields on the ${s.id} sheet?`))return;$$('[data-save]',s).forEach(el=>{localStorage.removeItem(P+el.dataset.save);if(el.type==='checkbox')el.checked=false;else el.value=''});if(s.id==='day'){for(const kind of ['action','event']){dayRowState[kind]=Array.from({length:5},()=>kind==='action'?{text:'',done:false}:{text:'',time:''});saveDayRows(kind);renderDayRows(kind)}}if(s.id==='domain')$('.domain-flag',s).forEach(b=>{localStorage.removeItem(b.dataset.flagKey);b.setAttribute('aria-pressed','false')})});const initial=location.hash.slice(1);if(['day','domain','week','month','semester','year'].includes(initial))activate(initial);
 </script></body></html>
