@@ -72,8 +72,8 @@ async function exportSheetPDF(){
   for(let i=0;i<pages.length;i++){
    const original=pages[i];const clone=original.cloneNode(true);
    // Sync live form state from the original before rendering the PDF.
-   const originalFields=$('input,textarea,select',original);
-   const clonedFields=$('input,textarea,select',clone);
+   const originalFields=Array.from(original.querySelectorAll('input,textarea,select'));
+   const clonedFields=Array.from(clone.querySelectorAll('input,textarea,select'));
    originalFields.forEach((field,j)=>{const target=clonedFields[j];if(!target)return;
     if(field.type==='checkbox')target.checked=field.checked;
     else{target.value=field.value;target.setAttribute('value',field.value)}
