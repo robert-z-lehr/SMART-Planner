@@ -31,7 +31,7 @@ table{width:100%;max-width:100%;border-collapse:collapse;table-layout:fixed}th,t
  input,textarea{background-color:#fff!important;color:#000!important;-webkit-text-fill-color:#000!important;color-scheme:light!important;-webkit-appearance:none;appearance:none}input::placeholder,textarea::placeholder{color:transparent!important;-webkit-text-fill-color:transparent!important}
 }
 </style></head><body>
-<header class="app-header"><div class="header-row"><div class="brand">SMART Planner</div><nav class="tabs"><button class="tab-btn active" data-tab="day">Day</button><button class="tab-btn" data-tab="week">Week</button><button class="tab-btn" data-tab="month">Month</button><button class="tab-btn" data-tab="semester">Semester</button><button class="tab-btn" data-tab="year">Year</button><button class="tab-btn" data-tab="advice">Advice</button></nav><div class="tools"><button class="tool-btn danger" id="clearBtn">Clear sheet</button><button class="tool-btn primary" id="printBtn">Print sheet</button></div></div></header>
+<header class="app-header"><div class="header-row"><div class="brand">SMART Planner</div><nav class="tabs"><button class="tab-btn active" data-tab="day">Day</button><button class="tab-btn" data-tab="week">Week</button><button class="tab-btn" data-tab="month">Month</button><button class="tab-btn" data-tab="semester">Semester</button><button class="tab-btn" data-tab="year">Year</button><button class="tab-btn" data-tab="advice">Advice</button></nav><div class="tools"><button class="tool-btn danger" id="clearBtn">Clear sheet</button><button class="tool-btn" id="pdfBtn">Save / Share PDF</button><button class="tool-btn primary" id="printBtn">Print sheet</button></div></div></header>
 <main>
 <section class="sheet active" id="day" data-sheet="day"><div class="day-front"><div class="sheet-head"><div><h1>Daily Planner</h1><p>One main focus. Concrete actions. Close the loop.</p></div><div class="date-fields"><div class="field"><label>Date</label><input data-save="day-date" type="date"></div></div></div><div class="callout"><div class="mini-label">One focus for today</div><input data-save="day-focus" class="focus-input" type="text" placeholder="What single outcome matters most today?"></div><div class="section day-grid"><div><h2 class="section-title">Priority Action Steps</h2><table><thead><tr><th style="width:32px">#</th><th>Concrete Step</th><th class="check-cell">Done</th></tr></thead><tbody id="dayActions"></tbody></table></div><div><h2 class="section-title">Constraints</h2><div class="card"><h3>Fixed Commitments</h3><textarea class="lined-constraint" data-save="day-fixed" aria-label="Fixed commitments"></textarea></div><div class="card" style="margin-top:8px"><h3>Blockers / Risks</h3><textarea class="lined-constraint" data-save="day-blockers-risks" aria-label="Blockers and risks"></textarea></div><div class="section"><h2 class="section-title">Results</h2></div></div></div><div class="section two-col"><div class="card"><h3>End of Day (Produced):</h3><textarea class="lined-result" data-save="day-produced" placeholder="Observable output, not effort."></textarea></div><div class="card"><h3>Carry Forward / Change:</h3><textarea class="lined-result" data-save="day-carry" placeholder="What moves, changes, or gets dropped?"></textarea></div></div></div><div class="day-back"><h2 class="section-title">Takeaways / Reflections</h2><p class="reflection-subtitle">What / Why / How / Who / When / Where / If / Scale / Evidence / Next</p><textarea class="lined-reflection" data-save="day-reflections" aria-label="Daily takeaways and reflections"></textarea><div class="reflection-print" aria-hidden="true"></div></div></section>
 <section class="sheet" id="week" data-sheet="week"><div class="week-front"><div class="sheet-head"><div><h1>Weekly SMART Planner</h1><p>Plan up to seven major outcomes.</p></div><div class="date-fields"><div class="field"><label>Week starts</label><input data-save="week-start" type="date"></div><div class="field"><label>Week ends</label><input data-save="week-end" type="date"></div></div></div><div class="section"><h2 class="section-title">Weekly Goals</h2><table><thead><tr><th style="width:42px">ID</th><th>Goals</th><th style="width:150px">Deadline</th><th style="width:55px">Done</th></tr></thead><tbody id="weeklyGoals"></tbody></table></div><div class="section"><h2 class="section-title">SMART Check</h2><ul class="smart-list"><li><strong>Specific:</strong> Clear output/action?</li><li><strong>Measurable?:</strong> Observable criterion?</li><li><strong>Achievable?:</strong> Possible this week?</li><li><strong>Relevant?:</strong> Advances priority?</li><li><strong>Time-bound?:</strong> clear deadline?</li></ul></div><div class="section two-col"><div class="card"><h3>End of Week (Produced):</h3><textarea class="lined-result" data-save="week-produced" placeholder="Observable output, not effort."></textarea></div><div class="card"><h3>Carry Forward / Change:</h3><textarea class="lined-result" data-save="week-change" placeholder="What moves, changes, or gets dropped?"></textarea></div></div></div><div class="week-back"><h2 class="section-title">Takeaways / Reflections</h2><p class="reflection-subtitle">What / Why / How / Who / When / Where / If / Scale / Evidence / Next</p><textarea class="lined-reflection" data-save="week-reflections" aria-label="Weekly takeaways and reflections"></textarea><div class="reflection-print" aria-hidden="true"></div></div></section>
@@ -46,5 +46,69 @@ function savedInput(key,type='text',placeholder=''){const x=document.createEleme
 function buildStaticRows(){for(let i=1;i<=5;i++){const tr=document.createElement('tr');addCell(tr,String(i));addCell(tr,savedInput(`day-action-${i}`));addCell(tr,checkbox(`day-action-done-${i}`),'check-cell');$('#dayActions').append(tr)}for(let i=1;i<=7;i++){const tr=document.createElement('tr');addCell(tr,String(i));addCell(tr,savedInput(`week-goal-${i}`));addCell(tr,savedInput(`week-deadline-${i}`,'date'));addCell(tr,checkbox(`week-goal-done-v2-${i}`),'check-cell');$('#weeklyGoals').append(tr)}for(let i=1;i<=5;i++){const tr=document.createElement('tr');addCell(tr,`Week ${i}`);addCell(tr,savedInput(`month-week-${i}`));addCell(tr,checkbox(`month-week-done-${i}`),'check-cell');$('#monthWeeks').append(tr)}['Research','Coursework','Professional','Personal'].forEach((a,i)=>{const tr=document.createElement('tr');addCell(tr,a);addCell(tr,savedInput(`sem-goal-${i}`));addCell(tr,savedInput(`sem-measure-${i}`));$('#semesterGoals').append(tr)});for(let i=1;i<=4;i++){const tr=document.createElement('tr');addCell(tr,savedInput(`sem-course-${i}`));addCell(tr,savedInput(`sem-course-deliverable-${i}`));addCell(tr,savedInput(`sem-course-target-${i}`));$('#semesterCourses').append(tr)}for(let i=1;i<=4;i++){const tr=document.createElement('tr');addCell(tr,`Y${i}`);addCell(tr,savedInput(`year-goal-${i}`));addCell(tr,savedInput(`year-measure-${i}`));addCell(tr,savedInput(`year-deadline-${i}`));$('#yearGoals').append(tr)}for(let q=1;q<=4;q++){const c=document.createElement('div');c.className='card year-quarter';c.innerHTML=`<h3>Quarter ${q}</h3>`;c.append(savedArea(`year-q${q}`,'Major outputs, milestones, deadlines…'));$('#quarters').append(c)}const recurring=[['Vehicle inspection / registration','Before expiration'],['Taxes / records','Annual deadline'],['Insurance review','Annual'],['Preventive maintenance','Annual / as needed']];recurring.forEach((r,i)=>{const tr=document.createElement('tr');addCell(tr,savedInput(`annual-task-${i}`,'text',r[0]));addCell(tr,savedInput(`annual-when-${i}`,'text',r[1]));addCell(tr,checkbox(`annual-done-${i}`),'check-cell');$('#annualRecurring').append(tr)})}
 function hydrate(){$$('[data-save]').forEach(el=>{const k=P+el.dataset.save,v=localStorage.getItem(k);if(v!==null){if(el.type==='checkbox')el.checked=v==='true';else el.value=v}const ev=el.type==='checkbox'?'change':'input';el.addEventListener(ev,()=>localStorage.setItem(k,el.type==='checkbox'?String(el.checked):el.value))})}
 function activate(id){$$('.sheet').forEach(s=>s.classList.toggle('active',s.id===id));$$('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));history.replaceState(null,'',`#${id}`)}function cleanupPrint(){$$('.sheet.print-target').forEach(s=>s.classList.remove('print-target'))}function syncReflectionPrint(){$$('.sheet').forEach(sheet=>{const src=$('.lined-reflection',sheet),dst=$('.reflection-print',sheet);if(src&&dst)dst.textContent=src.value})}
-buildStaticRows();hydrate();$$('.tab-btn').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));window.addEventListener('beforeprint',syncReflectionPrint);window.addEventListener('afterprint',cleanupPrint);$('#printBtn').addEventListener('click',()=>{cleanupPrint();syncReflectionPrint();const s=$('.sheet.active');s.classList.add('print-target');void s.offsetHeight;window.print()});$('#clearBtn').addEventListener('click',()=>{const s=$('.sheet.active');if(!confirm(`Clear all saved fields on the ${s.id} sheet?`))return;$$('[data-save]',s).forEach(el=>{localStorage.removeItem(P+el.dataset.save);if(el.type==='checkbox')el.checked=false;else el.value=''})});const initial=location.hash.slice(1);if(['day','week','month','semester','year','advice'].includes(initial))activate(initial);
+// Standalone iOS web apps can silently ignore window.print(); create a shareable PDF instead.
+const isStandaloneIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent) &&
+ (window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches);
+let exporting=false;
+async function exportSheetPDF(){
+ if(exporting)return;
+ if(typeof html2canvas!=='function'||!window.jspdf?.jsPDF){
+  alert('PDF exporter could not load. Check your internet connection and try again.');return;
+ }
+ exporting=true;
+ const pdfBtn=$('#pdfBtn'),printBtn=$('#printBtn'),oldText=pdfBtn.textContent;
+ pdfBtn.disabled=true;printBtn.disabled=true;pdfBtn.textContent='Preparing PDF…';
+ const source=$('.sheet.active');
+ const pages=(source.id==='day'||source.id==='week')
+  ? [source.querySelector(source.id==='day'?'.day-front':'.week-front'),source.querySelector(source.id==='day'?'.day-back':'.week-back')]
+  : [source];
+ const staging=document.createElement('div');
+ staging.setAttribute('aria-hidden','true');
+ Object.assign(staging.style,{position:'fixed',left:'-10000px',top:'0',width:'816px',zIndex:'-1',background:'#fff'});
+ document.body.append(staging);
+ try{
+  syncReflectionPrint();
+  const pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'pt',format:'letter',compress:true});
+  for(let i=0;i<pages.length;i++){
+   const original=pages[i];const clone=original.cloneNode(true);
+   // Sync live form state from the original before rendering the PDF.
+   const originalFields=$('input,textarea,select',original);
+   const clonedFields=$('input,textarea,select',clone);
+   originalFields.forEach((field,j)=>{const target=clonedFields[j];if(!target)return;
+    if(field.type==='checkbox')target.checked=field.checked;
+    else{target.value=field.value;target.setAttribute('value',field.value)}
+   });
+   clone.classList.add('pdf-export-page');
+   clone.style.display='block';clone.style.width='816px';clone.style.maxWidth='816px';
+   clone.style.minHeight='0';clone.style.height='auto';clone.style.margin='0';
+   clone.style.padding='30px 34px';clone.style.background='#fff';
+   clone.style.borderRadius='0';clone.style.boxShadow='none';
+   if(source.id==='day'||source.id==='week'){
+    // Reflection text needs to be visible during capture.
+    const reflection=clone.querySelector('.lined-reflection');
+    if(reflection){reflection.style.height='510px';reflection.style.minHeight='510px';reflection.style.overflow='hidden'}
+   }
+   staging.replaceChildren(clone);
+   const canvas=await html2canvas(clone,{backgroundColor:'#ffffff',scale:1.5,useCORS:true,logging:false,windowWidth:1024});
+   if(i>0)pdf.addPage();
+   const inset=18,maxW=612-2*inset,maxH=792-2*inset;
+   const ratio=Math.min(maxW/canvas.width,maxH/canvas.height);
+   const w=canvas.width*ratio,h=canvas.height*ratio;
+   pdf.addImage(canvas.toDataURL('image/jpeg',0.88),'JPEG',(612-w)/2,18,w,h,undefined,'FAST');
+  }
+  const filename='SMART-Planner-'+source.id+'-'+new Date().toISOString().slice(0,10)+'.pdf';
+  const blob=pdf.output('blob');
+  const file=new File([blob],filename,{type:'application/pdf'});
+  if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+   try{await navigator.share({files:[file],title:'SMART Planner '+source.id});return}
+   catch(err){if(err.name==='AbortError')return}
+  }
+  // In browsers without file sharing, allow direct PDF download.
+  const url=URL.createObjectURL(blob),link=document.createElement('a');
+  link.href=url;link.download=filename;document.body.append(link);link.click();link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+ }catch(err){console.error('SMART Planner PDF export',err);alert('PDF export failed. Try opening this planner in Safari to print.')}
+ finally{staging.remove();exporting=false;pdfBtn.disabled=false;printBtn.disabled=false;pdfBtn.textContent=oldText}
+}
+buildStaticRows();hydrate();$$('.tab-btn').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.tab)));window.addEventListener('beforeprint',syncReflectionPrint);window.addEventListener('afterprint',cleanupPrint);$('#pdfBtn').addEventListener('click',exportSheetPDF);$('#printBtn').addEventListener('click',()=>{if(isStandaloneIOS()){exportSheetPDF();return}cleanupPrint();syncReflectionPrint();const s=$('.sheet.active');s.classList.add('print-target');void s.offsetHeight;window.print()});$('#clearBtn').addEventListener('click',()=>{const s=$('.sheet.active');if(!confirm(`Clear all saved fields on the ${s.id} sheet?`))return;$$('[data-save]',s).forEach(el=>{localStorage.removeItem(P+el.dataset.save);if(el.type==='checkbox')el.checked=false;else el.value=''})});const initial=location.hash.slice(1);if(['day','week','month','semester','year','advice'].includes(initial))activate(initial);
 </script></body></html>
