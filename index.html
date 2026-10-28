@@ -99,7 +99,7 @@ function restoreDayRows(){
  }
 }
 function syncDateAppearance(root=document){$$('input[type=date]',root).forEach(el=>el.classList.toggle('date-selected',!!el.value))}
-function hydrate(){$$('[data-save]').forEach(el=>{const k=P+el.dataset.save,v=localStorage.getItem(k);if(v!==null){if(el.type==='checkbox')el.checked=v==='true';else el.value=v}const ev=el.type==='checkbox'?'change':'input';el.addEventListener(ev,()=>localStorage.setItem(k,el.type==='checkbox'?String(el.checked):el.value))})}
+function hydrate(){$$('[data-save]').forEach(el=>{const k=P+el.dataset.save,v=localStorage.getItem(k);if(v!==null){if(el.type==='checkbox')el.checked=v==='true';else el.value=v}const ev=(el.type==='checkbox'||el.tagName==='SELECT')?'change':'input';el.addEventListener(ev,()=>localStorage.setItem(k,el.type==='checkbox'?String(el.checked):el.value))})}
 function activate(id){$$('.sheet').forEach(s=>s.classList.toggle('active',s.id===id));$$('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));history.replaceState(null,'',`#${id}`)}function cleanupPrint(){$$('.sheet.print-target').forEach(s=>s.classList.remove('print-target'))}function syncReflectionPrint(){$$('.sheet').forEach(sheet=>{const src=$('.lined-reflection',sheet),dst=$('.reflection-print',sheet);if(src&&dst)dst.textContent=src.value})}
 // Standalone iOS web apps can silently ignore window.print(); create a shareable PDF instead.
 
@@ -190,7 +190,7 @@ async function exportSheetPDF(){
    const clonedFields=Array.from(clone.querySelectorAll('input,textarea,select'));
    originalFields.forEach((field,j)=>{const target=clonedFields[j];if(!target)return;
     if(field.type==='checkbox')target.checked=field.checked;
-    else{target.value=field.value;target.setAttribute('value',field.value)}
+    else{target.value=field.value;if(target.tagName==='SELECT'){[...target.options].forEach(o=>o.selected=o.value===field.value)}else target.setAttribute('value',field.value)}
    });
    clone.classList.add('pdf-export-page');
    clone.style.display='block';clone.style.width='816px';clone.style.maxWidth='816px';
