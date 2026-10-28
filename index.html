@@ -53,6 +53,8 @@ input[type=date]:not(.date-selected)::-webkit-calendar-picker-indicator{visibili
 /* Domain: five compact A/E classified entries per category, separate results page */
 .domain-action{grid-template-columns:15px minmax(0,1fr) 20px 39px!important;gap:4px}.domain-type{height:24px;width:100%;font-size:11px;border:1px solid var(--line);border-radius:4px;background:#fff;color:var(--ink);padding:0}.domain-back{margin-top:18px}.domain-flag{display:none!important}
 @media print{#domain .domain-front{break-after:page;page-break-after:always}#domain .domain-back{break-before:page;page-break-before:always;margin:0!important}#domain .domain-action{grid-template-columns:12px minmax(0,1fr) 16px 27px!important;gap:3px}#domain .domain-type{height:20px;font-size:9px;border:0}#domain .lined-reflection{display:none!important}#domain .reflection-print{display:block!important;width:100%;height:7.4in;white-space:pre-wrap;line-height:28px;background:repeating-linear-gradient(to bottom,#fff 0,#fff 27px,#cfcfcf 27px,#cfcfcf 28px);border:1px solid #ccc}}
+
+.pdf-preview-panel{position:fixed;inset:0;z-index:999;background:#0009;display:flex;align-items:center;justify-content:center;padding:12px}.pdf-preview-panel[hidden]{display:none!important}.pdf-preview-dialog{width:min(900px,100%);height:min(94dvh,1000px);background:#fff;border-radius:12px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 8px 30px #0004}.pdf-preview-head,.pdf-preview-actions{display:flex;align-items:center;gap:10px;padding:9px 14px}.pdf-preview-head{justify-content:space-between}.pdf-preview-head button{border:0;background:transparent;font-size:22px}.pdf-preview-dialog iframe{border:0;flex:1;min-height:0;background:#eee;width:100%}.pdf-preview-actions{justify-content:flex-end;border-top:1px solid #ddd}.pdf-preview-actions button{border:1px solid #bbb;border-radius:7px;padding:8px 14px;background:#fff}.pdf-preview-actions .primary{background:var(--accent);color:#fff;border-color:var(--accent)}#pdfShareError{margin:0 14px 8px;color:#8a2d2d;font-size:12px}@media print{.pdf-preview-panel{display:none!important}}
 </style><script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script></head><body>
 <header class="app-header"><div class="header-row"><div class="brand">SMART Planner</div><nav class="tabs"><button class="tab-btn active" data-tab="day">Day</button><button class="tab-btn" data-tab="domain">Domain</button><button class="tab-btn" data-tab="week">Week</button><button class="tab-btn" data-tab="month">Month</button><button class="tab-btn" data-tab="semester">Semester</button><button class="tab-btn" data-tab="year">Year</button></nav><div class="tools"><button class="tool-btn danger" id="clearBtn">Clear sheet</button><button class="tool-btn primary" id="printBtn">Print/Share PDF</button></div></div></header>
 <main>
@@ -141,27 +143,39 @@ function buildDomains(){
 }
 const isStandaloneIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent) &&
  (window.navigator.standalone===true||window.matchMedia('(display-mode: standalone)').matches);
-let pendingPDFFile=null;
+let pendingPDFFile=null,previewPDFUrl=null;
 function showPDFShare(file){
  pendingPDFFile=file;
+ if(previewPDFUrl)URL.revokeObjectURL(previewPDFUrl);
+ previewPDFUrl=URL.createObjectURL(file);
  let panel=document.getElementById('pdfSharePanel');
  if(!panel){
-  panel=document.createElement('div');panel.id='pdfSharePanel';panel.className='pdf-share-panel';
-  panel.innerHTML='<div class="pdf-share-dialog" role="dialog" aria-modal="true" aria-labelledby="pdfShareHeading"><h2 id="pdfShareHeading">PDF ready</h2><p>Tap Share PDF and choose app to print/share.</p><div class="pdf-share-actions"><button type="button" id="pdfShareCancel">Cancel</button><button type="button" class="tool-btn primary" id="pdfShareNow">Share PDF</button></div><p id="pdfShareError" role="status"></p></div>';
+  panel=document.createElement('div');panel.id='pdfSharePanel';panel.className='pdf-preview-panel';
+  panel.hidden=true;
+  panel.innerHTML='<div class="pdf-preview-dialog" role="dialog" aria-modal="true" aria-labelledby="pdfShareHeading"><div class="pdf-preview-head"><strong id="pdfShareHeading">Print / Share Preview</strong><button type="button" id="pdfShareCancel" aria-label="Close preview">✕</button></div><iframe id="pdfPreviewFrame" title="Preview of printable PDF"></iframe><div class="pdf-preview-actions"><button type="button" id="pdfPrintNow">Print</button><button type="button" class="tool-btn primary" id="pdfShareNow">Share PDF</button></div><p id="pdfShareError" role="status"></p></div>';
   document.body.append(panel);
-  panel.querySelector('#pdfShareCancel').addEventListener('click',()=>{panel.hidden=true;pendingPDFFile=null});
+  const close=()=>{panel.hidden=true;panel.querySelector('#pdfPreviewFrame').removeAttribute('src');pendingPDFFile=null;if(previewPDFUrl){URL.revokeObjectURL(previewPDFUrl);previewPDFUrl=null}};
+  panel.querySelector('#pdfShareCancel').addEventListener('click',close);
   panel.querySelector('#pdfShareNow').addEventListener('click',async()=>{
    const selected=pendingPDFFile;if(!selected)return;
    const error=panel.querySelector('#pdfShareError');error.textContent='';
    if(!navigator.share||!navigator.canShare||!navigator.canShare({files:[selected]})){
-    error.textContent='This browser cannot share PDF files directly. Open the standalone app or Safari and try again.';return;
+    error.textContent='Direct PDF sharing is not available in this browser. Use the Print button or open the preview in your browser.';return;
    }
-   try{await navigator.share({files:[selected],title:'SMART Planner'});panel.hidden=true;pendingPDFFile=null}
+   try{await navigator.share({files:[selected],title:'SMART Planner'})}
    catch(e){if(e.name!=='AbortError')error.textContent='Sharing was unavailable: '+e.message}
   });
+  panel.querySelector('#pdfPrintNow').addEventListener('click',()=>{
+   const error=panel.querySelector('#pdfShareError');error.textContent='';
+   const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+   if(ios){error.textContent='On iPhone, choose Share PDF, then Print from the iOS share sheet.';return}
+   try{panel.querySelector('#pdfPreviewFrame').contentWindow.print()}
+   catch(e){error.textContent='Browser printing was blocked. Open the PDF preview in a browser to print.'}
+  });
  }
+ panel.querySelector('#pdfShareError').textContent='';
+ panel.querySelector('#pdfPreviewFrame').src=previewPDFUrl;
  panel.hidden=false;
- panel.querySelector('#pdfShareNow').focus();
 }
 let exporting=false;
 async function exportSheetPDF(){
